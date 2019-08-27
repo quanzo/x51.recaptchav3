@@ -244,9 +244,9 @@ class Main
         if (!empty($only_url)) {
             $request = Application::getInstance()->getContext()->getRequest();
 			$currPage = $request->getRequestedPage();
-            $arValidUrls = explode("\n", strtr($only_url, "\r", ''));
-            foreach ($arValidUrls as $pattern) {
-                if (fnmatch($pattern, $currPage)) {
+            $arValidUrls = explode("\n", strtr($only_url, "\r", ''));			
+            foreach ($arValidUrls as $pattern) {                
+				if (fnmatch(str_replace(array("\r", "\n", "\t"), '', $pattern), $currPage)) {
                     $checked = true;
                     break;
                 }
@@ -254,6 +254,7 @@ class Main
         } else {
 			$checked = true;
 		}
+		//file_put_contents(__DIR__.'/4.txt', print_r($currPage, true).print_r($arValidUrls, true).print_r($checked, true));
         return $checked;
     }
 
